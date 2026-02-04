@@ -2,6 +2,7 @@
 **A Multi-Physics Continuous-Time Mechanistic Model for Smartphone Battery Discharge Prediction Considering Aging and System Feedback**
 
 > 以下内容仅是草稿说明，最终版本内容需要查看仓库中的pdf文件
+> 
 > The following content is only a draft; please read the PDF file for the complete version.
 
 ## 1. Introduction
