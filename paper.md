@@ -63,6 +63,31 @@
 
 ---
 
+
+| 符号 (Symbol) | 定义 (Definition) | 单位 (Unit) |
+| :--- | :--- | :--- |
+| $SOC(t)$ | 电池荷电状态 (State of Charge) | 无量纲 (0~1) |
+| $V_{C1}(t), V_{C2}(t)$ | 极化电容支路电压 (Polarization Voltages) | V |
+| $H(t)$ | 滞后状态变量 (Hysteresis State) | 无量纲 (-1~1) |
+| $T(t)$ | 电池核心温度 (Battery Core Temperature) | K |
+| $I_{batt}(t)$ | 电池放电电流 (Discharge Current) | A |
+| $V_{term}(t)$ | 电池端电压 (Terminal Voltage) | V |
+| $V_{OCV}$ | 包含滞后的开路电压 (OCV with Hysteresis) | V |
+| $V_{eq}$ | 电池平衡电势 (Equilibrium Potential) | V |
+| $R_0, R_1, R_2$ | 欧姆/快极化/慢极化内阻 (Internal Resistances) | $\Omega$ |
+| $C_1, C_2$ | 极化电容 (Polarization Capacitances) | F |
+| $Q_{max}(N_{cyc})$ | 当前循环下的最大可用容量 (Actual Capacity) | Ah |
+| $N_{cyc}$ | 电池等效循环次数 (Cycle Number) | 无量纲 |
+| $P_{base}(t)$ | 系统基础功率需求 (Base Power Demand) | W |
+| $P_{req}(t)$ | 经节流后的实际负载功率 (Actual Load Power) | W |
+| $\lambda(V, T)$ | 系统功率反馈节流因子 (Throttling Coefficient) | 无量纲 (0~1) |
+| $\eta_{pmic}$ | 电源转换效率 (Power Conversion Efficiency) | 无量纲 (0~1) |
+| $m C_p$ | 电池等效热容 (Total Heat Capacity) | J/K |
+| $hA$ | 综合散热系数 (Heat Transfer Coefficient) | W/K |
+| $T_{amb}$ | 环境温度 (Ambient Temperature) | K |
+| $E_a$ | 内阻活化能 (Activation Energy) | J/mol |
+| $TTE$ | 剩余放电时间 (Time-to-Empty) | min |
+
   
 
 ## 2. 模型假设 (Model Assumptions)
@@ -82,6 +107,8 @@ Despite similar initial capacities, substantial dispersion in degradation rates 
 
 3. 个体差异正态分布：同批次电池的初始参数（$R_0, Q_{nom}$）服从正态分布 $N(\mu, \sigma^2)$，所以采用同批次电池在初始容量与内阻上的离散性通过正态分布扰动项建模，The stochastic perturbations are introduced solely to reflect manufacturing variability and are not treated as random variables for inference, but as bounded uncertainty terms constrained by empirical degradation envelopes.
 
+**Separation of Scales and Quasi-static Approximation**: The timescale of capacity degradation and resistance growth (cycles/months) is several orders of magnitude larger than that of a single discharge event (minutes/hours). Consequently, aging-dependent parameters ($Q_{max}, R_{aging}$) are treated as **quasi-static constants** during the TTE prediction interval $[0, t_{end}]$. They are initialized as functions of $N_{cyc}$ at $t=0$ and remain invariant during the integration of the DAE system.
+(**尺度分离与准静态近似**：电池老化过程（$N_{cyc}$）的时间尺度（天/月）远大于单次放电过程的时间尺度（分钟/小时）。因此，在单次 TTE 预测仿真中，老化相关参数（$Q_{max}, R_{aging}$）被视为**准静态常数（Quasi-static constants）**，其值仅在仿真初始时刻根据 $N_{cyc}$ 确定，在积分过程中不随 $t$ 演化。)
   
 
 4. 分级关机逻辑假设：
@@ -338,10 +365,6 @@ $$ V_{term} = V_{est} - I \cdot R_0(T, N_{cyc}) $$
 
 $$ V_{term} = V_{OCV}(SOC, H) - V_{C1} - V_{C2} - I_{batt} R_0(T, N_{cyc}) $$
 
-
-
-
-
 结合负载功率需求 $P_{req}$，功率约束方程（代数环）即功率平衡方程 $f(I, \mathbf{x}) = 0$，可得到：
 
 $$ \boxed{ R_0(T, N_{cyc}) \cdot I_{batt}^2 - [V_{OCV}(SOC, H) - V_{C1} - V_{C2}] \cdot I_{batt} + P_{req}(t) = 0 } $$
@@ -352,11 +375,9 @@ $$ R_0(T, N_{cyc}) \cdot I^2 - V_{est}(SOC, V_{Ci}) \cdot I + P_{req}(V, T) = 0 
 
 $$ \boxed{ f(I) = R_0 I^2 - V_{est} I + P_{req} = 0 } $$
 
-
 在传统的ODE模型中共，电流 $I_{batt}$ 通常是输入变量，但是在本模型中，由于系统的反馈和功率守恒的引入，电流演变为状态变量的隐函数；
 
 公式实际上是一个关于 $I_{batt}$ 的非线性代数方程：
-
 
 $$ f(I_{batt}) = R_0 I_{batt}^2 - V_{est} I_{batt} + P_{req} = 0 $$
 
@@ -391,7 +412,9 @@ $$\frac{\partial f}{\partial I} = 2 R_0 I - V_{est}$$
 
 这保证了我们可以使用常规的隐式求解器（如 $BDF$ 法或 $Radau$ 方法）进行稳定积分；
 
-然而，当系统逼近临界点（$\Delta \to 0$）时，系统抵达物理可行域的边缘（Discriminant Manifold），此时 $Jacobian$ 矩阵 $\partial f / \partial I$ 趋于奇异（$\frac{\partial f}{\partial I} \to 0$）。在数值模拟中，这表现为系统上的数值刚性（Stiffness）的无穷大；
+然而，当系统逼近临界点（$\Delta \to 0$）时，系统抵达物理可行域的边缘（Discriminant Manifold），此时 $Jacobian$ 矩阵 $\partial f / \partial I$ 趋于奇异（$\frac{\partial f}{\partial I} \to 0$）。在数值模拟中，这表现为系统上的数值刚性（Stiffness）的无穷大 $^1$；
+
+The critical point of voltage collapse is analyzed as a **saddle-node bifurcation**, following the theoretical framework established by **Dobson and Chiang [5]**.
 
 从动力学系统角度看，由于两个解分支在 $\Delta = 0$ 处相遇并消失，这构成了典型的鞍结分岔（Saddle-node Bifurcation）。这就是导致手机“瞬间关机”的numerical manifestation of the underlying saddle-node bifurcation：当负载功率或内阻的乘积超过电压平方的四分之一时，物理层面不再存在能够维持功率平衡的实数电流解，系统被迫从动力学稳态直接跳变至断电状态。
 
@@ -579,3 +602,30 @@ Figure 6.1 numerically validates that the loss of solvability of the algebraic p
 2. **边界可视化**：相平面分析清晰地展示了“低温关机”的物理边界。
 
 3. **实用价值**：该模型可部署于 BMS 中，提供比单纯 SOC 更具指导意义的“最大可用功率”预测。
+
+### Data and Code Availability
+The empirical degradation models in this study were calibrated using the publicly available **NASA PCoE Battery Dataset [1]** and **CALCE Battery Data [2]**. The system-level power throttling logic and thermal management parameters were modeled with reference to the **Android Open Source Project (AOSP) [8]**. The simulation framework and numerical implementation developed in this work referenced the architecture of the open-source project available at **[10]**.
+
+---
+
+### References
+
+[1] B. Saha and K. Goebel, "Battery Data Set," *NASA Ames Prognostics Data Repository*, NASA Ames Research Center, Moffett Field, CA, 2007. [Online]. Available: https://www.nasa.gov/intelligent-systems-division/discovery-and-systems-health/pcoe/pcoe-data-set-repository/
+
+[2] M. Pecht, "CALCE Battery Data," *Center for Advanced Life Cycle Engineering (CALCE)*, University of Maryland, 2023. [Online]. Available: https://calce.umd.edu/battery-data
+
+[3] National Battery Safety Innovation Center, "Battery Operational Data Series," *NBSDC Data Repository*, 2022. [Online]. Available: https://nbsdc.cn/general/dataDetail?id=630c856999f1de3bca1e63c2
+
+[4] R. Garg, "Mobile Battery Dataset with Time-Series Voltage Profiles," *Kaggle Repository*, 2023. [Online]. Available: https://www.kaggle.com/datasets/rahulgarg28/mobile-battery-with-time
+
+[5] I. Dobson and H.-D. Chiang, "Towards a theory of voltage collapse in electric power systems," *Systems & Control Letters*, vol. 13, no. 3, pp. 253-262, 1989.
+
+[6] J. F. Manwell and J. G. McGowan, "Lead acid battery storage model for hybrid energy systems," *Solar Energy*, vol. 50, no. 5, pp. 399-405, 1993. *(Note: Kinetic Battery Model foundation)*.
+
+[7] L. Zhang et al., "Accurate online power estimation and automatic battery behavior based power model generation for smartphones," in *Proc. IEEE/ACM/IFIP Int. Conf. Hardware/Software Codesign and System Synthesis (CODES+ISSS)*, 2010.
+
+[8] Google, "Android Power Management and Thermal Mitigation Strategy," *Android Open Source Project (AOSP) Documentation*, 2024. [Online]. Available: https://source.android.com/docs/core/power
+
+[9] GitCode Tech Blog, "Analysis of Android Battery Historian Data Structures," 2023. [Online]. Available: https://blog.gitcode.com/f5f7ea29887236ee33a94c651a75c920.html
+
+[10] R. Tan, "BatteryLife: Open Source Battery Aging Analysis Tools," *GitHub Repository*, 2024. [Online]. Available: https://github.com/Ruifeng-Tan/BatteryLife
