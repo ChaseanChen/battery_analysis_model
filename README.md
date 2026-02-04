@@ -99,6 +99,7 @@ Based on the NASA lithium-ion battery aging dataset (B0005, B0006, B0007, B0018)
 |  B0006  |  168   |    41.75%     |
 |  B0007  |  168   |    24.25%     |
 |  B0018  |  132   |     7.71%     |
+
 These values are used to constrain the feasible range of aging-related parameters in the proposed model.
 
 **A. 容量衰减 (Capacity Fade)**
@@ -435,4 +436,3 @@ $$
 
 [10] R. Tan, "BatteryLife: Open Source Battery Aging Analysis Tools," *GitHub Repository*, 2024. [Online]. Available: https://github.com/Ruifeng-Tan/BatteryLife
 
-## Appendix
