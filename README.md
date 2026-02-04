@@ -1,6 +1,8 @@
 # 考虑老化机制与系统反馈的智能手机锂离子电池 TTE 预测模型
 **A Multi-Physics Continuous-Time Mechanistic Model for Smartphone Battery Discharge Prediction Considering Aging and System Feedback**
 
+> 以下内容仅是草稿说明，最终版本内容需要查看仓库中的pdf文件
+
 ## 1. Introduction
 
 ### 1.1 背景：非线性耦合导致的系统失稳
