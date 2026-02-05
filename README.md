@@ -440,3 +440,4 @@ $$
 
 [10] R. Tan, "BatteryLife: Open Source Battery Aging Analysis Tools," *GitHub Repository*, 2024. [Online]. Available: https://github.com/Ruifeng-Tan/BatteryLife
 
+end
