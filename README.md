@@ -1,6 +1,7 @@
 # 考虑老化机制与系统反馈的智能手机锂离子电池 TTE 预测模型
 **A Multi-Physics Continuous-Time Mechanistic Model for Smartphone Battery Discharge Prediction Considering Aging and System Feedback**
 
+> 本倉庫採用了ai進行語言上潤色以及翻譯，故帶有一定的ai風格，請諒解
 > *以下内容仅是草稿说明，最终版本内容需要查看仓库中的pdf文件*
 > 
 > *The following content is only a draft; please read the PDF file for the complete version.*
@@ -8,7 +9,7 @@
 ## 1. Introduction
 
 ### 1.1 背景：非线性耦合导致的系统失稳
-现代智能手机的电源管理不仅受限于电化学储能，更受限于负载功率对端电压的非线性正反馈。在低温与老化场景下，电池内阻 $R_0$ 显著升高，使得功率平衡方程 $P=V \cdot I$ 演变为一个典型的代数环问题。当电池无法满足负载的瞬时功率需求时，系统将跨越物理可行域的边界，导致瞬态电压崩溃（Voltage Collapse）。本文旨在构建一个 Index-1 的微分代数方程（DAE）系统，刻画这种从稳态运行到动力学失稳的临界演化过程。
+现代智能手机的电源管理不仅受限于电化学储能，更受限于负载功率对端电压的非线性正反馈。在低温与老化场景下，电池内阻 $R_{0}$ 显著升高，使得功率平衡方程 $P=V \cdot I$ 演变为一个典型的代数环问题。当电池无法满足负载的瞬时功率需求时，系统将跨越物理可行域的边界，导致瞬态电压崩溃（Voltage Collapse）。本文旨在构建一个 Index-1 的微分代数方程（DAE）系统，刻画这种从稳态运行到动力学失稳的临界演化过程。
 
 传统的库伦计数法（Coulomb Counting）和开环等效电路模型作出的假设：
 1. 负载功率恒定或外部给定；
