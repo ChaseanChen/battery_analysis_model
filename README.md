@@ -69,12 +69,12 @@
 
 2. 双重老化机制：电池衰退由“日历老化”（忽略）和“循环老化”组成，主要表现为 SEI 膜增厚导致的内阻增加和活性锂损失导致的容量衰减；
 
-3. 个体差异正态分布：同批次电池的初始参数（$R_0, Q_{nom}$）服从正态分布 $N(\mu, \sigma^2)$，所以采用同批次电池在初始容量与内阻上的离散性通过正态分布扰动项建模，The stochastic perturbations are introduced solely to reflect manufacturing variability and are not treated as random variables for inference, but as bounded uncertainty terms constrained by empirical degradation envelopes.
+3. 个体差异正态分布：同批次电池的初始参数（$R_{0}, Q_{nom}$）服从正态分布 $N(\mu, \sigma^2)$，所以采用同批次电池在初始容量与内阻上的离散性通过正态分布扰动项建模，The stochastic perturbations are introduced solely to reflect manufacturing variability and are not treated as random variables for inference, but as bounded uncertainty terms constrained by empirical degradation envelopes.
 
-4. **Separation of Scales and Quasi-static Approximation**: The timescale of capacity degradation and resistance growth (cycles/months) is several orders of magnitude larger than that of a single discharge event (minutes/hours). Consequently, aging-dependent parameters ($Q_{max}, R_{aging}$) are treated as **quasi-static constants** during the TTE prediction interval $[0, t_{end}]$. They are initialized as functions of $N_{cyc}$ at $t=0$ and remain invariant during the integration of the DAE system. (**尺度分离与准静态近似**：电池老化过程（$N_{cyc}$）的时间尺度（天/月）远大于单次放电过程的时间尺度（分钟/小时）。因此，在单次 TTE 预测仿真中，老化相关参数（$Q_{max}, R_{aging}$）被视为**准静态常数（Quasi-static constants）**，其值仅在仿真初始时刻根据 $N_{cyc}$ 确定，在积分过程中不随 $t$ 演化。)
+4. **Separation of Scales and Quasi-static Approximation**: The timescale of capacity degradation and resistance growth (cycles/months) is several orders of magnitude larger than that of a single discharge event (minutes/hours). Consequently, aging-dependent parameters ($Q_{max}, R_{aging}$) are treated as **quasi-static constants** during the TTE prediction interval $[0, t_{end}]$. They are initialized as functions of $N_{cyc}$ at $t=0$ and remain invariant during the integration of the DAE system. (**尺度分离与准静态近似**：电池老化过程（$N_{cyc}$）的时间尺度（天/月）远大于单次放电过程的时间尺度（分钟/小时）。因此，在单次 TTE 预测仿真中，老化相关参数 $Q_{max}, R_{aging}$ 被视为准静态常数（Quasi-static constants），其值仅在仿真初始时刻根据 $N_{cyc}$ 确定，在积分过程中不随 $t$ 演化。)
 5. 分级关机逻辑假设：
-- 软关机 (Soft Shutdown)：$V_{term} \le 3.4V$ 时系统触发省电模式（限制功率）；
-- 硬关机 (Hard Cutoff)：$V_{term} \le 3.0V$ 或发生功率崩溃（Power Collapse）即代数约束上不存在实根时，强制断电；
+- 软关机 (Soft Shutdown)：$V_{term}\le 3.4V$ 时系统触发省电模式（限制功率）；
+- 硬关机 (Hard Cutoff)：$V_{term}\le 3.0V$ 或发生功率崩溃（Power Collapse）即代数约束上不存在实根时，强制断电；
 In the proposed model, hard cutoff is triggered either by voltage protection or by the loss of feasibility of the algebraic power constraint.
 
 ## 4. Mathematical Modeling
@@ -86,7 +86,9 @@ In the proposed model, hard cutoff is triggered either by voltage protection or 
 
 Electrical dynamics, thermal evolution, aging states, and system-level feedback are **bidirectionally coupled**, producing intrinsic algebraic loops between terminal voltage, current, and power demand. Consequently, the system cannot be represented by a pure ODE and must be formulated as a **DAE system**.
 
-定义系统状态向量：$\mathbf{x}(t) = [SOC(t), V_{C1}(t), V_{C2}(t), T(t), H(t)]^T$
+定义系统状态向量:
+
+$$\mathbf{x}(t) = [SOC(t), V_{C1}(t), V_{C2}(t), T(t), H(t)]^T$$
 
 ### 4.1 submodule 1: 考虑老化与个体差异的参数模型 (Aging & Variance)
 在仿真开始前，根据电池的循环次数 $N_{cyc}$ 和个体差异因子 $\delta$，确定当前电池的物理参数。
