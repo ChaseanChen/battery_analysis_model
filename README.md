@@ -36,7 +36,6 @@
 
 ## 3. Symbol and Assumptions
 
-
 ### 3.1 Symbol Description
 | 符号 (Symbol)            | 定义 (Definition)                      | 单位 (Unit)  |
 | :--------------------- | :----------------------------------- | :--------- |
@@ -64,7 +63,6 @@
 
 ### 3.2 Fundamental Assumptions
 
-
 1. 集总参数与均匀性：将电池视作一个集总系统，假设电池内部温度、浓度，电化学状态在单体尺度上的分布均匀，该假设适用于手机单体电芯在中低倍率（≤2C）放电工况；
 
 2. 双重老化机制：电池衰退由“日历老化”（忽略）和“循环老化”组成，主要表现为 SEI 膜增厚导致的内阻增加和活性锂损失导致的容量衰减；
@@ -80,7 +78,6 @@ In the proposed model, hard cutoff is triggered either by voltage protection or 
 ## 4. Mathematical Modeling
 
 ![Fig3.0](./src/Fig3.0_Architecture_of_Coupled_DAE_Battery_System.png.png)
-
 
 **Figure 3.0. Architecture of the coupled DAE-based battery discharge model with aging, thermal dynamics, and closed-loop power feedback.** 
 
@@ -166,13 +163,10 @@ The OCV curve is treated as an empirical monotonic function calibrated from typi
 
 $$ \frac{dH}{dt} = -\kappa |I_{batt}| (H - \text{sgn}(I_{batt})) $$
 
-
 *当持续放电时，$H \to -1$，表现为电压低于平衡电势 $V_{eq}$。* In this work, only discharge scenarios are considered; therefore, the hysteresis state converges to $(H \to -1)$, and the sign function reduces to a constant.
 
 **C. 极化电压 (Dual-RC)**
 $$ \frac{dV_{Ci}}{dt} = -\frac{1}{R_i C_i} V_{Ci} + \frac{1}{C_i} I_{batt}, \quad i=1,2 $$
-
-
 
 #### Subsubsection：Effect of Aging on Voltage Hysteresis and Polarization
 
@@ -409,7 +403,6 @@ $$
 $$
 
 ## 7. Strengths and Weakness
-
 
 ## 8. Conclusion
 
