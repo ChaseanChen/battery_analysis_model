@@ -67,12 +67,12 @@
 
 2. 双重老化机制：电池衰退由“日历老化”（忽略）和“循环老化”组成，主要表现为 SEI 膜增厚导致的内阻增加和活性锂损失导致的容量衰减；
 
-3. 个体差异正态分布：同批次电池的初始参数（$R_{0}, Q_{nom}$）服从正态分布 $N(\mu, \sigma^2)$，所以采用同批次电池在初始容量与内阻上的离散性通过正态分布扰动项建模，The stochastic perturbations are introduced solely to reflect manufacturing variability and are not treated as random variables for inference, but as bounded uncertainty terms constrained by empirical degradation envelopes.
+3. 个体差异正态分布：同批次电池的初始参数（ $R_{0}, Q_{nom}$ ）服从正态分布 $N(\mu, \sigma^2)$，所以采用同批次电池在初始容量与内阻上的离散性通过正态分布扰动项建模，The stochastic perturbations are introduced solely to reflect manufacturing variability and are not treated as random variables for inference, but as bounded uncertainty terms constrained by empirical degradation envelopes.
 
 4. **Separation of Scales and Quasi-static Approximation**: The timescale of capacity degradation and resistance growth (cycles/months) is several orders of magnitude larger than that of a single discharge event (minutes/hours). Consequently, aging-dependent parameters ($Q_{max}, R_{aging}$) are treated as **quasi-static constants** during the TTE prediction interval $[0, t_{end}]$. They are initialized as functions of $N_{cyc}$ at $t=0$ and remain invariant during the integration of the DAE system. (**尺度分离与准静态近似**：电池老化过程（ $N_{cyc}$ ）的时间尺度（天/月）远大于单次放电过程的时间尺度（分钟/小时）。因此，在单次 TTE 预测仿真中，老化相关参数 $Q_{max}, R_{aging}$ 被视为准静态常数（Quasi-static constants），其值仅在仿真初始时刻根据 $N_{cyc}$ 确定，在积分过程中不随 $t$ 演化。)
 5. 分级关机逻辑假设：
-- 软关机 (Soft Shutdown)：$V_{term}\le 3.4V$ 时系统触发省电模式（限制功率）；
-- 硬关机 (Hard Cutoff)：$V_{term}\le 3.0V$ 或发生功率崩溃（Power Collapse）即代数约束上不存在实根时，强制断电；
+- 软关机 (Soft Shutdown)： $V_{term}\le 3.4V$ 时系统触发省电模式（限制功率）；
+- 硬关机 (Hard Cutoff)： $V_{term}\le 3.0V$ 或发生功率崩溃（Power Collapse）即代数约束上不存在实根时，强制断电；
 In the proposed model, hard cutoff is triggered either by voltage protection or by the loss of feasibility of the algebraic power constraint.
 
 ## 4. Mathematical Modeling
@@ -109,12 +109,12 @@ These values are used to constrain the feasible range of aging-related parameter
 
 **A. 容量衰减 (Capacity Fade)**
 遵循 SEI 膜生长的平方根法则：
-$$ Q_{max}(N_{cyc}) = Q_{design} \cdot (1 + \delta_Q) \cdot \left( 1 - \alpha_{sei} \sqrt{N_{cyc}} \right) $$
+$$Q_{max}(N_{cyc}) = Q_{design} \cdot (1 + \delta_Q) \cdot \left( 1 - \alpha_{sei} \sqrt{N_{cyc}} \right)$$
 *其中 $\delta_Q \sim N(0, 0.02)$ 为个体容量差异。* The square-root law is applied at the cycle level and does not imply continuous-time differentiability of capacity with respect to time. A lower bound is imposed on $Q_{max}$ to prevent nonphysical negative capacity during long-term extrapolation. The parameter $\alpha_{sei}$ is calibrated such that $\alpha_{sei} \in [0.018, 0.032]$ ensuring consistency with empirical degradation trajectories.
 
 **B. 内阻增长 (Resistance Growth)**
 内阻随循环次数线性或指数增长（取决于化学体系，此处采用线性简化）：
-$$ R_{aging}(N_{cyc}) = (1 + \beta_{res} N_{cyc}) \cdot (1 + \delta_R) $$
+$$R_{aging}(N_{cyc}) = (1 + \beta_{res} N_{cyc}) \cdot (1 + \delta_R)$$
 
 *其中 $\delta_R \sim N(0, 0.03)$ 为个体阻抗差异。* 
 
@@ -123,18 +123,23 @@ Empirical studies on the NASA dataset indicate that, Within the first 150–200 
 ### 4.2 submodule 2: 闭环负载与反馈控制 (Closed-loop Load Model)
 为了模拟真实的手机系统，负载不再是恒定的，而是受电压和温度反馈控制的变量。
 
-**A. 基础功率需求**：$P_{base}(t) = \frac{1}{\eta} \left( P_{disp}(t) + P_{cpu}(t) + P_{net}(t) \right)$
+**A. 基础功率需求**： $P_{base}(t) = \frac{1}{\eta} \left( P_{disp}(t) + P_{cpu}(t) + P_{net}(t) \right)$
 
 **B. 系统反馈因子 (System Throttling)**：
 
-引入调节因子 $\lambda(t) \in [0, 1]$，模拟电源管理逻辑：
+引入调节因子 $\lambda(t) \in [0, 1]$ ，模拟电源管理逻辑：
 
-$$ \lambda(t) = \min \left( \underbrace{\frac{1}{1+e^{(T - 45)/2}}}_{\text{Thermal Throttling}}, \quad \underbrace{\tanh(k_v (V_{term} - 3.0))}_{\text{Low Voltage Throttling}} \right) $$
+$$
+\lambda(t) = \min \left( \underbrace{\frac{1}{1+e^{(T - 45)/2}}}_{\text{Thermal Throttling}}, \quad \underbrace{\tanh(k_v (V_{term} - 3.0))}_{\text{Low Voltage Throttling}} \right)
+$$
 
-$(T - T_{crit}), \quad T_{crit}=45^\circ\mathrm{C}$，Temperature is expressed in degrees Celsius in the throttling logic for consistency with system-level thermal limits. 
+$(T - T_{crit}), \quad T_{crit}=45^\circ\mathrm{C}$ ，Temperature is expressed in degrees Celsius in the throttling logic for consistency with system-level thermal limits. 
+
 可将其描述为一个软切换函数 Soft-switching function：
 
-$$ \lambda(V) = \frac{1}{2} \left[ 1 + \tanh\left( \frac{V - V_{crit}}{\epsilon} \right) \right] $$
+$$
+\lambda(V) = \frac{1}{2} \left[ 1 + \tanh\left( \frac{V - V_{crit}}{\epsilon} \right) \right]
+$$
 
 ![Fig3.2](./src/Fig3.2_Voltage_Based_Power_Throttling.png)
 
@@ -143,19 +148,24 @@ $$ \lambda(V) = \frac{1}{2} \left[ 1 + \tanh\left( \frac{V - V_{crit}}{\epsilon}
 The throttling function is not required to be smooth everywhere, as it represents discrete system-level power management logic rather than intrinsic electrochemical dynamics.
 
 **C. 实际负载**：实际负载功率 $P_{req}$ 是电压与温度的隐函数：
+
 $P_{req}(t) = P_{base}(t) \cdot \lambda(t)$ 或 $P_{req} = P_{base} \cdot \lambda(V, T)$
 
 ### 4.3 submodule 3: 电化学动态 (Electrochemical Dynamics)
 
 **A. 容量归一化的 SOC 动态方程**
 
-$$ \frac{dSOC}{dt} = -\frac{I_{batt}(t)}{Q_{max}}, \qquad Q_{max} \text{ expressed in Coulombs (As)} $$
+$$
+\frac{dSOC}{dt} = -\frac{I_{batt}(t)}{Q_{max}}, \qquad Q_{max} \text{ expressed in Coulombs (As)} 
+$$
 
 **B. 包含滞后的 OCV 模型 (OCV with Hysteresis)**
 
 引入滞后状态变量 $H(t)$ 以修正充放电电压差：
 
-$$ V_{OCV}(SOC, H) = V_{eq}(SOC) + M(SOC) \cdot H(t) $$
+$$
+V_{OCV}(SOC, H) = V_{eq}(SOC) + M(SOC) \cdot H(t)
+$$
 
 The OCV curve is treated as an empirical monotonic function calibrated from typical smartphone Li-ion cells, rather than a chemistry-specific equilibrium potential.
 
