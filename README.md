@@ -107,7 +107,7 @@ Based on the NASA lithium-ion battery aging dataset (B0005, B0006, B0007, B0018)
 
 These values are used to constrain the feasible range of aging-related parameters in the proposed model.
 
-**A. 容量衰减 (Capacity Fade)*
+**A. 容量衰减 (Capacity Fade)**
 
 遵循 SEI 膜生长的平方根法则：
 
