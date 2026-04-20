@@ -113,7 +113,7 @@ These values are used to constrain the feasible range of aging-related parameter
 
 $$Q_{max}(N_{cyc}) = Q_{design} \cdot (1 + \delta_Q) \cdot \left( 1 - \alpha_{sei} \sqrt{N_{cyc}} \right)$$
 
-*其中 $\delta_Q \sim N(0, 0.02)$ 为个体容量差异。* The square-root law is applied at the cycle level and does not imply continuous-time differentiability of capacity with respect to time. A lower bound is imposed on $Q_{max}$ to prevent nonphysical negative capacity during long-term extrapolation. The parameter $\alpha_{sei}$ is calibrated such that $\alpha_{sei} \in [0.018, 0.032]$ ensuring consistency with empirical degradation trajectories.
+其中 $\delta_Q \sim N(0, 0.02)$ 为个体容量差异。 The square-root law is applied at the cycle level and does not imply continuous-time differentiability of capacity with respect to time. A lower bound is imposed on $Q_{max}$ to prevent nonphysical negative capacity during long-term extrapolation. The parameter $\alpha_{sei}$ is calibrated such that $\alpha_{sei} \in [0.018, 0.032]$ ensuring consistency with empirical degradation trajectories.
 
 **B. 内阻增长 (Resistance Growth)**
 
@@ -171,7 +171,7 @@ The OCV curve is treated as an empirical monotonic function calibrated from typi
 
 $$\frac{dH}{dt} = -\kappa |I_{batt}| (H - \text{sgn}(I_{batt}))$$
 
-*当持续放电时，$H \to -1$，表现为电压低于平衡电势 $V_{eq}$ 。* In this work, only discharge scenarios are considered; therefore, the hysteresis state converges to $(H \to -1)$ , and the sign function reduces to a constant.
+当持续放电时，$H \to -1$ ，表现为电压低于平衡电势 $V_{eq}$ 。In this work, only discharge scenarios are considered; therefore, the hysteresis state converges to $(H \to -1)$ , and the sign function reduces to a constant.
 
 **C. 极化电压 (Dual-RC)**
 $$\frac{dV_{Ci}}{dt} = -\frac{1}{R_i C_i} V_{Ci} + \frac{1}{C_i} I_{batt}, \quad i=1,2$$
@@ -304,7 +304,7 @@ End For
 
 **Figure 4.1. DAE SOC and Discriminant Open-Loop.** 
 
-Note that $\Delta$ remains positive at $SOC \approx 0$ for this specific $P_{base}$ , implying the cut-off is energy-limited rather than stability-limited. (注意在此功率下，$Δ$ 在 SOC 归零时仍为正，说明关机是受能量限制而非稳定性限制)
+Note that $\Delta$ remains positive at $SOC \approx 0$ for this specific $P_{base}$ , implying the cut-off is energy-limited rather than stability-limited. (注意在此功率下， $Δ$ 在 SOC 归零时仍为正，说明关机是受能量限制而非稳定性限制)
 
 **A. 判别式流形 (Discriminant Manifold)**
 
@@ -371,9 +371,9 @@ In practice, this integral does not admit a closed-form solution due to the stro
 1. **TTE (Time-to-Empty)**： $\inf \{ t : SOC=0 \lor V_{term} \le 3.0V \lor \Delta < 0 \}$ 。Once the terminal voltage approaches the soft shutdown threshold, the feedback controller gradually reduces the power demand, preventing immediate voltage collapse. This behavior cannot be captured by traditional open-loop discharge models.
 
 2. **关机类型判定**：
-* 能量耗尽：$SOC \approx 0$ 且 $V_{term} > 3.0V$。
-* 低压保护：$V_{term} \le 3.0V$ 且 $\Delta > 0$（常见于老化电池）。
-* 瞬间死机：$\Delta < 0$（常见于低温+重负载）。
+* 能量耗尽： $SOC \approx 0$ 且 $V_{term} > 3.0V$ 。
+* 低压保护： $V_{term} \le 3.0V$ 且 $\Delta > 0$ （常见于老化电池）。
+* 瞬间死机： $\Delta < 0$ （常见于低温+重负载）。
 
 ## 6. Sensitivity Analysis
 为了定量评估系统在不同工况下的鲁棒性，本节分析了剩余放电时间（TTE）对内阻 $R_0$ 扰动的无量纲灵敏度；由于 TTE 的终点由功率判别式 $\Delta = 0$ 确定的临界状态 $SOC_{crit}$ 决定，定义 $SOC_{crit}$ 对 $R_0$ 的相对灵敏度系数 $S_{R_0}$ ：
@@ -386,7 +386,7 @@ $$S_{R_0} = \frac{\partial SOC_{crit} / SOC_{crit}}{\partial R_0 / R_0} = \frac{
 
 $$\frac{d SOC_{crit}}{d R_0} = - \frac{\partial f / \partial R_0}{\partial f / \partial SOC} = \frac{4 P_{req}}{2 V_{OCV}(SOC) \cdot \frac{d V_{OCV}}{d SOC}}$$
 
-分析该式可知，灵敏度的大小高度依赖于 $V_{OCV}$ 曲线在临界点处的斜率以及当前电压水平。在 $SOC$ 较低的区域，$V_{OCV}$ 快速下降，导致 $d SOC_{crit} / d R_0$ 呈现非线性增长。
+分析该式可知，灵敏度的大小高度依赖于 $V_{OCV}$ 曲线在临界点处的斜率以及当前电压水平。在 $SOC$ 较低的区域， $V_{OCV}$ 快速下降，导致 $d SOC_{crit} / d R_0$ 呈现非线性增长。
 
 ### 6.2 灵敏度热图分析
 
