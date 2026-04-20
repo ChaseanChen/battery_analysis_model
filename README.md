@@ -10,7 +10,7 @@
 ## 1. Introduction
 
 ### 1.1 背景：非线性耦合导致的系统失稳
-现代智能手机的电源管理不仅受限于电化学储能，更受限于负载功率对端电压的非线性正反馈。在低温与老化场景下，电池内阻$R_{0}$显著升高，使得功率平衡方程 $P=V \cdot I$ 演变为一个典型的代数环问题。当电池无法满足负载的瞬时功率需求时，系统将跨越物理可行域的边界，导致瞬态电压崩溃（Voltage Collapse）。本文旨在构建一个 Index-1 的微分代数方程（DAE）系统，刻画这种从稳态运行到动力学失稳的临界演化过程。
+现代智能手机的电源管理不仅受限于电化学储能，更受限于负载功率对端电压的非线性正反馈。在低温与老化场景下，电池内阻 $R_{0}$ 显著升高，使得功率平衡方程 $P=V \cdot I$ 演变为一个典型的代数环问题。当电池无法满足负载的瞬时功率需求时，系统将跨越物理可行域的边界，导致瞬态电压崩溃（Voltage Collapse）。本文旨在构建一个 Index-1 的微分代数方程（DAE）系统，刻画这种从稳态运行到动力学失稳的临界演化过程。
 
 传统的库伦计数法（Coulomb Counting）和开环等效电路模型作出的假设：
 1. 负载功率恒定或外部给定；
@@ -47,15 +47,15 @@
 | $V_{term}(t)$          | 电池端电压 (Terminal Voltage)               | V          |
 | $V_{OCV}$              | 包含滞后的开路电压 (OCV with Hysteresis)      | V          |
 | $V_{eq}$               | 电池平衡电势 (Equilibrium Potential)         | V          |
-| $R_0,R_1, R_2$         | 欧姆/快极化/慢极化内阻 (Internal Resistances)  | $\Omega$   |
-| $C_1,C_2$              | 极化电容 (Polarization Capacitances)         | F          |
+| $R_0, R_1, R_2$         | 欧姆/快极化/慢极化内阻 (Internal Resistances)  | $\Omega$   |
+| $C_1, C_2$              | 极化电容 (Polarization Capacitances)         | F          |
 | $Q_{max}(N_{cyc})$     | 当前循环下的最大可用容量 (Actual Capacity)      | Ah         |
 | $N_{cyc}$              | 电池等效循环次数 (Cycle Number)               | 无量纲        |
 | $P_{base}(t)$          | 系统基础功率需求 (Base Power Demand)          | W          |
 | $P_{req}(t)$           | 经节流后的实际负载功率 (Actual Load Power)      | W          |
 | $\lambda(V, T)$        | 系统功率反馈节流因子 (Throttling Coefficient)   | 无量纲 (0~1)  |
 | $\eta_{pmic}$          | 电源转换效率 (Power Conversion Efficiency)    | 无量纲 (0~1)  |
-| $m,C_p$                 | 电池等效热容 (Total Heat Capacity)             | J/K        |
+| $m C_p$                 | 电池等效热容 (Total Heat Capacity)             | J/K        |
 | $hA$                    | 综合散热系数 (Heat Transfer Coefficient)       | W/K        |
 | $T_{amb}$               | 环境温度 (Ambient Temperature)                | K          |
 | $E_a$                   | 内阻活化能 (Activation Energy)                | J/mol      |
@@ -69,7 +69,7 @@
 
 3. 个体差异正态分布：同批次电池的初始参数（$R_{0}, Q_{nom}$）服从正态分布 $N(\mu, \sigma^2)$，所以采用同批次电池在初始容量与内阻上的离散性通过正态分布扰动项建模，The stochastic perturbations are introduced solely to reflect manufacturing variability and are not treated as random variables for inference, but as bounded uncertainty terms constrained by empirical degradation envelopes.
 
-4. **Separation of Scales and Quasi-static Approximation**: The timescale of capacity degradation and resistance growth (cycles/months) is several orders of magnitude larger than that of a single discharge event (minutes/hours). Consequently, aging-dependent parameters ($Q_{max}, R_{aging}$) are treated as **quasi-static constants** during the TTE prediction interval $[0, t_{end}]$. They are initialized as functions of $N_{cyc}$ at $t=0$ and remain invariant during the integration of the DAE system. (**尺度分离与准静态近似**：电池老化过程（$N_{cyc}$）的时间尺度（天/月）远大于单次放电过程的时间尺度（分钟/小时）。因此，在单次 TTE 预测仿真中，老化相关参数 $Q_{max}, R_{aging}$ 被视为准静态常数（Quasi-static constants），其值仅在仿真初始时刻根据 $N_{cyc}$ 确定，在积分过程中不随 $t$ 演化。)
+4. **Separation of Scales and Quasi-static Approximation**: The timescale of capacity degradation and resistance growth (cycles/months) is several orders of magnitude larger than that of a single discharge event (minutes/hours). Consequently, aging-dependent parameters ($Q_{max}, R_{aging}$) are treated as **quasi-static constants** during the TTE prediction interval $[0, t_{end}]$. They are initialized as functions of $N_{cyc}$ at $t=0$ and remain invariant during the integration of the DAE system. (**尺度分离与准静态近似**：电池老化过程（ $N_{cyc}$ ）的时间尺度（天/月）远大于单次放电过程的时间尺度（分钟/小时）。因此，在单次 TTE 预测仿真中，老化相关参数 $Q_{max}, R_{aging}$ 被视为准静态常数（Quasi-static constants），其值仅在仿真初始时刻根据 $N_{cyc}$ 确定，在积分过程中不随 $t$ 演化。)
 5. 分级关机逻辑假设：
 - 软关机 (Soft Shutdown)：$V_{term}\le 3.4V$ 时系统触发省电模式（限制功率）；
 - 硬关机 (Hard Cutoff)：$V_{term}\le 3.0V$ 或发生功率崩溃（Power Collapse）即代数约束上不存在实根时，强制断电；
