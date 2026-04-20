@@ -389,17 +389,17 @@ $$ \frac{d SOC_{crit}}{d R_0} = - \frac{\partial f / \partial R_0}{\partial f / 
 
 1. **Critical SOC**  
 $$
-    SOC_{crit}(N) = \min { SOC \mid \Delta(SOC, T, N) = 0 }  
+SOC_{crit}(N) = \min { SOC \mid \Delta(SOC, T, N) = 0 }  
 $$
     
 2. **Critical Power**  
 $$
-    P_{crit}(N) = \frac{V_{est}^2(SOC_{crit})}{4 R_0(N)}  
+P_{crit}(N) = \frac{V_{est}^2(SOC_{crit})}{4 R_0(N)}  
 $$
     
 3. **Shutdown Mode Ratio**  
 $$
-    \Gamma(N) = \frac{N_{\Delta<0}}{N_{total}}  
+\Gamma(N) = \frac{N_{\Delta<0}}{N_{total}}  
 $$
 
 ## 7. Strengths and Weakness
