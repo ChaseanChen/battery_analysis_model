@@ -211,7 +211,9 @@ $$ V_{term} = V_{OCV}(SOC, H) - V_{C1} - V_{C2} - I_{batt} R_0(T, N_{cyc}) $$
 
 结合负载功率需求 $P_{req}$，功率平衡方程 $f(I, \mathbf{x}) = 0$：
 
-$$ \boxed{ R_0(T, N_{cyc}) \cdot I_{batt}^2 - [V_{OCV}(SOC, H) - V_{C1} - V_{C2}] \cdot I_{batt} + P_{req}(t) = 0 } $$
+$$
+\boxed{ R_0(T, N_{cyc}) \cdot I_{batt}^2 - [V_{OCV}(SOC, H) - V_{C1} - V_{C2}] \cdot I_{batt} + P_{req}(t) = 0 }
+$$
 
 这是模型的动力学核心。公式实际上是一个关于 $I_{batt}$ 的非线性代数方程：
 
