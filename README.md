@@ -37,29 +37,29 @@
 ## 3. Symbol and Assumptions
 
 ### 3.1 Symbol Description
-| 符号 (Symbol)           | 定义 (Definition)                          | 单位 (Unit)   |
-| :--------------------- | :---------------------------------------- | :------------ |
-| $SOC(t)$               | 电池荷电状态 (State of Charge)               | 无量纲 (0~1)  |
-| $V_{C1}(t),V_{C2}(t)$  | 极化电容支路电压 (Polarization Voltages)      | V            |
-| $H(t)$                 | 滞后状态变量 (Hysteresis State)              | 无量纲 (-1~1) |
-| $T(t)$                 | 电池核心温度 (Battery Core Temperature)      | K            |  
-| $I_{batt}(t)$          | 电池放电电流 (Discharge Current)             | A            |
-| $V_{term}(t)$          | 电池端电压 (Terminal Voltage)               | V          |
-| $V_{OCV}$              | 包含滞后的开路电压 (OCV with Hysteresis)      | V          |
-| $V_{eq}$               | 电池平衡电势 (Equilibrium Potential)         | V          |
-| $R_0, R_1, R_2$         | 欧姆/快极化/慢极化内阻 (Internal Resistances)  | $\Omega$   |
-| $C_1, C_2$              | 极化电容 (Polarization Capacitances)         | F          |
-| $Q_{max}(N_{cyc})$     | 当前循环下的最大可用容量 (Actual Capacity)      | Ah         |
-| $N_{cyc}$              | 电池等效循环次数 (Cycle Number)               | 无量纲        |
-| $P_{base}(t)$          | 系统基础功率需求 (Base Power Demand)          | W          |
-| $P_{req}(t)$           | 经节流后的实际负载功率 (Actual Load Power)      | W          |
-| $\lambda(V, T)$        | 系统功率反馈节流因子 (Throttling Coefficient)   | 无量纲 (0~1)  |
-| $\eta_{pmic}$          | 电源转换效率 (Power Conversion Efficiency)    | 无量纲 (0~1)  |
-| $m C_p$                 | 电池等效热容 (Total Heat Capacity)             | J/K        |
-| $hA$                    | 综合散热系数 (Heat Transfer Coefficient)       | W/K        |
-| $T_{amb}$               | 环境温度 (Ambient Temperature)                | K          |
-| $E_a$                   | 内阻活化能 (Activation Energy)                | J/mol      |
-| $TTE$                   | 剩余放电时间 (Time-to-Empty)                  | min        |
+| 符号 (Symbol)           | 定义 (Definition)                           | 单位 (Unit)   |
+| :--------------------- | :------------------------------------------ | :------------ |
+| $SOC(t)$               | 电池荷电状态 (State of Charge)               | 无量纲 (0~1)   |
+| $V_{C1}(t),V_{C2}(t)$  | 极化电容支路电压 (Polarization Voltages)      | V             |
+| $H(t)$                 | 滞后状态变量 (Hysteresis State)              | 无量纲 (-1~1)  |
+| $T(t)$                 | 电池核心温度 (Battery Core Temperature)      | K             |  
+| $I_{batt}(t)$          | 电池放电电流 (Discharge Current)             | A             |
+| $V_{term}(t)$          | 电池端电压 (Terminal Voltage)                | V             |
+| $V_{OCV}$              | 包含滞后的开路电压 (OCV with Hysteresis)      | V            |
+| $V_{eq}$               | 电池平衡电势 (Equilibrium Potential)          | V            |
+| $R_0, R_1, R_2$        | 欧姆/快极化/慢极化内阻 (Internal Resistances)  | $\Omega$     |
+| $C_1, C_2$             | 极化电容 (Polarization Capacitances)          | F            |
+| $Q_{max}(N_{cyc})$     | 当前循环下的最大可用容量 (Actual Capacity)      | Ah          |
+| $N_{cyc}$              | 电池等效循环次数 (Cycle Number)                | 无量纲       |
+| $P_{base}(t)$          | 系统基础功率需求 (Base Power Demand)           | W           |
+| $P_{req}(t)$           | 经节流后的实际负载功率 (Actual Load Power)      | W           |
+| $\lambda(V, T)$        | 系统功率反馈节流因子 (Throttling Coefficient)   | 无量纲 (0~1)|
+| $\eta_{pmic}$          | 电源转换效率 (Power Conversion Efficiency)     | 无量纲 (0~1)|
+| $m C_p$                | 电池等效热容 (Total Heat Capacity)             | J/K        |
+| $hA$                   | 综合散热系数 (Heat Transfer Coefficient)       | W/K        |
+| $T_{amb}$              | 环境温度 (Ambient Temperature)                 | K          |
+| $E_a$                  | 内阻活化能 (Activation Energy)                 | J/mol       |
+| $TTE$                  | 剩余放电时间 (Time-to-Empty)                   | min         |
 
 ### 3.2 Fundamental Assumptions
 
@@ -107,13 +107,18 @@ Based on the NASA lithium-ion battery aging dataset (B0005, B0006, B0007, B0018)
 
 These values are used to constrain the feasible range of aging-related parameters in the proposed model.
 
-**A. 容量衰减 (Capacity Fade)**
+**A. 容量衰减 (Capacity Fade)*
+
 遵循 SEI 膜生长的平方根法则：
+
 $$Q_{max}(N_{cyc}) = Q_{design} \cdot (1 + \delta_Q) \cdot \left( 1 - \alpha_{sei} \sqrt{N_{cyc}} \right)$$
+
 *其中 $\delta_Q \sim N(0, 0.02)$ 为个体容量差异。* The square-root law is applied at the cycle level and does not imply continuous-time differentiability of capacity with respect to time. A lower bound is imposed on $Q_{max}$ to prevent nonphysical negative capacity during long-term extrapolation. The parameter $\alpha_{sei}$ is calibrated such that $\alpha_{sei} \in [0.018, 0.032]$ ensuring consistency with empirical degradation trajectories.
 
 **B. 内阻增长 (Resistance Growth)**
+
 内阻随循环次数线性或指数增长（取决于化学体系，此处采用线性简化）：
+
 $$R_{aging}(N_{cyc}) = (1 + \beta_{res} N_{cyc}) \cdot (1 + \delta_R)$$
 
 *其中 $\delta_R \sim N(0, 0.03)$ 为个体阻抗差异。* 
@@ -121,6 +126,7 @@ $$R_{aging}(N_{cyc}) = (1 + \beta_{res} N_{cyc}) \cdot (1 + \delta_R)$$
 Empirical studies on the NASA dataset indicate that, Within the first 150–200 cycles, experimental observations indicate that the effective DC internal resistance increases monotonically and can be approximated by a linear function. Therefore, a linearized aging model is adopted to balance physical fidelity and numerical tractability.
 
 ### 4.2 submodule 2: 闭环负载与反馈控制 (Closed-loop Load Model)
+
 为了模拟真实的手机系统，负载不再是恒定的，而是受电压和温度反馈控制的变量。
 
 **A. 基础功率需求**： $P_{base}(t) = \frac{1}{\eta} \left( P_{disp}(t) + P_{cpu}(t) + P_{net}(t) \right)$
@@ -129,17 +135,13 @@ Empirical studies on the NASA dataset indicate that, Within the first 150–200 
 
 引入调节因子 $\lambda(t) \in [0, 1]$ ，模拟电源管理逻辑：
 
-$$
-\lambda(t) = \min \left( \underbrace{\frac{1}{1+e^{(T - 45)/2}}}_{\text{Thermal Throttling}}, \quad \underbrace{\tanh(k_v (V_{term} - 3.0))}_{\text{Low Voltage Throttling}} \right)
-$$
+$$\lambda(t) = \min \left( \underbrace{\frac{1}{1+e^{(T - 45)/2}}}_{\text{Thermal Throttling}}, \quad \underbrace{\tanh(k_v (V_{term} - 3.0))}_{\text{Low Voltage Throttling}} \right)$$
 
 $(T - T_{crit}), \quad T_{crit}=45^\circ\mathrm{C}$ ，Temperature is expressed in degrees Celsius in the throttling logic for consistency with system-level thermal limits. 
 
 可将其描述为一个软切换函数 Soft-switching function：
 
-$$
-\lambda(V) = \frac{1}{2} \left[ 1 + \tanh\left( \frac{V - V_{crit}}{\epsilon} \right) \right]
-$$
+$$\lambda(V) = \frac{1}{2} \left[ 1 + \tanh\left( \frac{V - V_{crit}}{\epsilon} \right) \right]$$
 
 ![Fig3.2](./src/Fig3.2_Voltage_Based_Power_Throttling.png)
 
@@ -155,28 +157,24 @@ $P_{req}(t) = P_{base}(t) \cdot \lambda(t)$ 或 $P_{req} = P_{base} \cdot \lambd
 
 **A. 容量归一化的 SOC 动态方程**
 
-$$
-\frac{dSOC}{dt} = -\frac{I_{batt}(t)}{Q_{max}}, \qquad Q_{max} \text{ expressed in Coulombs (As)} 
-$$
+$$\frac{dSOC}{dt} = -\frac{I_{batt}(t)}{Q_{max}}, \qquad Q_{max} \text{ expressed in Coulombs (As)} $$
 
 **B. 包含滞后的 OCV 模型 (OCV with Hysteresis)**
 
 引入滞后状态变量 $H(t)$ 以修正充放电电压差：
 
-$$
-V_{OCV}(SOC, H) = V_{eq}(SOC) + M(SOC) \cdot H(t)
-$$
+$$V_{OCV}(SOC, H) = V_{eq}(SOC) + M(SOC) \cdot H(t)$$
 
 The OCV curve is treated as an empirical monotonic function calibrated from typical smartphone Li-ion cells, rather than a chemistry-specific equilibrium potential.
 
 滞后项的动态方程：
 
-$$ \frac{dH}{dt} = -\kappa |I_{batt}| (H - \text{sgn}(I_{batt})) $$
+$$\frac{dH}{dt} = -\kappa |I_{batt}| (H - \text{sgn}(I_{batt}))$$
 
-*当持续放电时，$H \to -1$，表现为电压低于平衡电势 $V_{eq}$。* In this work, only discharge scenarios are considered; therefore, the hysteresis state converges to $(H \to -1)$, and the sign function reduces to a constant.
+*当持续放电时，$H \to -1$，表现为电压低于平衡电势 $V_{eq}$ 。* In this work, only discharge scenarios are considered; therefore, the hysteresis state converges to $(H \to -1)$ , and the sign function reduces to a constant.
 
 **C. 极化电压 (Dual-RC)**
-$$ \frac{dV_{Ci}}{dt} = -\frac{1}{R_i C_i} V_{Ci} + \frac{1}{C_i} I_{batt}, \quad i=1,2 $$
+$$\frac{dV_{Ci}}{dt} = -\frac{1}{R_i C_i} V_{Ci} + \frac{1}{C_i} I_{batt}, \quad i=1,2$$
 
 #### Subsubsection：Effect of Aging on Voltage Hysteresis and Polarization
 
@@ -196,7 +194,7 @@ Aging-induced polarization asymmetry is implicitly captured through the increase
 
 **A. 阿伦尼乌斯-老化耦合内阻**：这是模型的核心非线性源：
 
-$$ R_0(T, N_{cyc}) = R_{base} \cdot R_{aging}(N_{cyc}) \cdot \exp \left[ \frac{E_a}{R_g} \left( \frac{1}{T} - \frac{1}{T_{ref}} \right) \right] $$
+$$R_0(T, N_{cyc}) = R_{base} \cdot R_{aging}(N_{cyc}) \cdot \exp \left[ \frac{E_a}{R_g} \left( \frac{1}{T} - \frac{1}{T_{ref}} \right) \right]$$
 
 **B. 热平衡方程**：
 
@@ -206,30 +204,30 @@ Thermal parameters are selected to reproduce qualitative trends rather than cali
 
 ### 4.5 功率平衡约束与代数环分析 (System Coupling)
 
-定义有效电压：$V_{est} = V_{OCV}(SOC, H) - V_{C1} - V_{C2}$。端电压 $V_{term}$ 与电流 $I$ 的代数约束关系如下：
-$$ V_{term} = V_{OCV}(SOC, H) - V_{C1} - V_{C2} - I_{batt} R_0(T, N_{cyc}) $$
+定义有效电压： $V_{est} = V_{OCV}(SOC, H) - V_{C1} - V_{C2}$ 。端电压 $V_{term}$ 与电流 $I$ 的代数约束关系如下：
+
+$$V_{term} = V_{OCV}(SOC, H) - V_{C1} - V_{C2} - I_{batt} R_0(T, N_{cyc})$$
 
 结合负载功率需求 $P_{req}$，功率平衡方程 $f(I, \mathbf{x}) = 0$：
 
-$$
-\boxed{ R_0(T, N_{cyc}) \cdot I_{batt}^2 - [V_{OCV}(SOC, H) - V_{C1} - V_{C2}] \cdot I_{batt} + P_{req}(t) = 0 }
-$$
+$$\boxed{ R_0(T, N_{cyc}) \cdot I_{batt}^2 - [V_{OCV}(SOC, H) - V_{C1} - V_{C2}] \cdot I_{batt} + P_{req}(t) = 0 }$$
 
 这是模型的动力学核心。公式实际上是一个关于 $I_{batt}$ 的非线性代数方程：
 
-$$ f(I_{batt}) = R_0 I_{batt}^2 - V_{est} I_{batt} + P_{req} = 0 $$
+$$f(I_{batt}) = R_0 I_{batt}^2 - V_{est} I_{batt} + P_{req} = 0$$
+
 方程有解：
 
-$$ I_{batt} = \frac{V_{est} \pm \sqrt{V_{est}^2 - 4 R_0 P_{req}}}{2 R_0} $$
+$$I_{batt} = \frac{V_{est} \pm \sqrt{V_{est}^2 - 4 R_0 P_{req}}}{2 R_0}$$
 
-从动力学角度来看，电流 $I$ 是由代数方程定义的隐函数，解的存在性取决于判别式：$\Delta = V_{est}^2 - 4 R_0 P_{req}$。必须选择带有负号的分支：
+从动力学角度来看，电流 $I$ 是由代数方程定义的隐函数，解的存在性取决于判别式： $\Delta = V_{est}^2 - 4 R_0 P_{req}$ 。必须选择带有负号的分支：
 
-1. 负号分支$I^* = \frac{V_{est} - \sqrt{\Delta}}{2 R_0}$对应的是低电流，高电压工作点，是电池稳态运行区；
+1. 负号分支 $I^* = \frac{V_{est} - \sqrt{\Delta}}{2 R_0}$ 对应的是低电流，高电压工作点，是电池稳态运行区；
 2. 非负号分支对应高电流低电压状态，会导致正反馈出现热失控和瞬时电压坍塌 Voltage Collapse。
 
 当 $\Delta \to 0$ 时，系统抵达物理可行域的边界（Discriminant Manifold），此时 the Jacobian with respect to the algebraic variable $\partial f / \partial I$ becomes singular。
 
-$Jacobian$ 矩阵为：$\frac{\partial f}{\partial I} = 2 R_0 I - V_{est}$。只要判别式 $\Delta > 0$，则 $\left.\frac{\partial f}{\partial I}\right|_{I=I^{*}}=-\sqrt{\Delta}$，意味着系统属于 $Index-1 DAE$。当系统逼近临界点（$\Delta \to 0$）时，系统抵达边界，Jacobian 趋于奇异。数值模拟中表现为系统刚性（Stiffness）的无穷大。
+$Jacobian$ 矩阵为： $\frac{\partial f}{\partial I} = 2 R_0 I - V_{est}$ 。只要判别式 $\Delta > 0$ ，则 $\left.\frac{\partial f}{\partial I}\right|_{I=I^{*}}=-\sqrt{\Delta}$ ，意味着系统属于 $Index-1 DAE$ 。当系统逼近临界点（ $\Delta \to 0$ ）时，系统抵达边界，Jacobian 趋于奇异。数值模拟中表现为系统刚性（Stiffness）的无穷大。
 
 The critical point of voltage collapse is analyzed as a **saddle-node bifurcation**, following the theoretical framework established by **Dobson and Chiang [5]**. 
 
@@ -241,11 +239,11 @@ The critical point of voltage collapse is analyzed as a **saddle-node bifurcatio
 
 2. **每步迭代逻辑**：
 
-* 根据当前状态 $(T, SOC, \dots)$ 更新 $R_0, V_{OCV}$;
-* 计算反馈因子 $\lambda$ 得到 $P_{req}$;
-* 求解代数约束方程得到 $I_{batt}$（取较小正根）;
-* 若 $\Delta < 0$，判定为 **Power Collapse**，仿真终止;
-* 计算状态导数 $d\mathbf{x}/dt$;
+* 根据当前状态 $(T, SOC, \dots)$ 更新 $R_0, V_{OCV}$ ;
+* 计算反馈因子 $\lambda$ 得到 $P_{req}$ ;
+* 求解代数约束方程得到 $I_{batt}$ （取较小正根）;
+* 若 $\Delta < 0$ ，判定为 **Power Collapse**，仿真终止;
+* 计算状态导数 $d\mathbf{x}/dt$ ;
 
 Although the system contains algebraic loops, the index of the DAE remains low due to the explicit quadratic form of the power constraint, enabling stable integration via implicit solvers.
 
@@ -257,15 +255,11 @@ The fast time scale is defined as the discharge time $t \in [0, TTE]$ , while th
 
 Following the commonly adopted square-root degradation law associated with SEI growth, the maximum available capacity is modeled as:  
 
-**$$
-Q_{\max}(N) = Q_{\max}(0)\left(1 - k_Q \sqrt{N}\right)
-$$**
+**$$Q_{\max}(N) = Q_{\max}(0)\left(1 - k_Q \sqrt{N}\right)$$**
 
 The internal resistance growth is approximated by a linear function of cycle number, which provides a numerically stable first-order representation of aging effects:
 
-**$$
-R_0(N) = R_0(0)\left(1 + k_R N\right)
-$$**
+**$$R_0(N) = R_0(0)\left(1 + k_R N\right)$$**
 
 At the beginning of each discharge simulation, the aging parameters are updated according to the slow-time aging laws, and then held constant during the fast-time DAE integration. Fully coupling aging dynamics into the fast-time DAE system would result in a stiff multi-scale DAE and is beyond the scope of this work.
 
@@ -275,16 +269,15 @@ The degradation of lithium-ion batteries is governed by electrochemical processe
 
 In this work, battery aging is formulated as a cycle-indexed discrete-time process. Each discharge event corresponds to one aging step, indexed by the equivalent cycle number (N). At the beginning of the (k)-th discharge cycle, the aging-dependent parameters are updated according to empirically motivated degradation laws, and are then treated as quasi-static constants throughout the subsequent fast-time DAE simulation.
 
-Specifically, the evolution of the maximum available capacity and the ohmic internal resistance is modeled as  
-$$
-Q_{\max}^{(k+1)} = Q_{\max}^{(k)} \left(1 - k_Q \sqrt{\Delta N_k}\right),  
-$$
-$$
-R_0^{(k+1)} = R_0^{(k)} \left(1 + k_R \Delta N_k\right),  
-$$
+Specifically, the evolution of the maximum available capacity and the ohmic internal resistance is modeled as
+
+$$Q_{\max}^{(k+1)} = Q_{\max}^{(k)} \left(1 - k_Q \sqrt{\Delta N_k}\right),$$
+
+$$R_0^{(k+1)} = R_0^{(k)} \left(1 + k_R \Delta N_k\right),$$
+
 where $k_Q$ and $k_R$ denote the capacity fade and resistance growth coefficients, respectively, and $\Delta N_k$ represents the effective cycle increment associated with the (k)-th discharge event.
 
-Within each discharge cycle, the updated parameters $Q_{\max}^{(k)}$ and (R_0^{(k)}) are held constant, and the coupled DAE system is integrated until a shutdown condition is reached. The resulting discharge duration defines the time-to-empty $TTE^{(k)}$, while the terminal shutdown mechanism (energy depletion, voltage cutoff, or power collapse) is recorded as an outcome of the cycle.
+Within each discharge cycle, the updated parameters $Q_{\max}^{(k)}$ and ( $R_0^{(k)}$ ) are held constant, and the coupled DAE system is integrated until a shutdown condition is reached. The resulting discharge duration defines the time-to-empty $TTE^{(k)}$ , while the terminal shutdown mechanism (energy depletion, voltage cutoff, or power collapse) is recorded as an outcome of the cycle.
 
 This two-time-scale formulation decouples the fast electro-thermal dynamics from the slow degradation process, enabling stable numerical integration while preserving the essential physical mechanisms of aging-induced performance deterioration.
 
@@ -293,7 +286,9 @@ This two-time-scale formulation decouples the fast electro-thermal dynamics from
 ### Algorithm 1: Cycle-Aware TTE Simulation Framework
 
 Algorithm 1 Cycle-Aware Battery Discharge Simulation
+
 Input: Initial SOC0, Qmax(0), R0(0), Ncycles
+
 For k = 1 to Ncycles do
     Update aging parameters Qmax(k), R0(k)
     Initialize DAE states
@@ -302,37 +297,42 @@ For k = 1 to Ncycles do
 End For
 
 ### 5.1 稳定性分析与相平面 (Stability & Phase Plane Analysis)
+
 为了量化“瞬间死机”的边界，我们不应仅将其视为一个数值报错，而应将其视为动力学系统中的鞍节点分叉 (Saddle-Node Bifurcation)。
 
 ![fig4.1](./src/Fig4.1_DAE_SOC_and_Discriminant_OpenLoop.png)
 
 **Figure 4.1. DAE SOC and Discriminant Open-Loop.** 
 
-Note that $\Delta$ remains positive at $SOC \approx 0$ for this specific $P_{base}$, implying the cut-off is energy-limited rather than stability-limited. (注意在此功率下，$Δ$ 在 SOC 归零时仍为正，说明关机是受能量限制而非稳定性限制)
+Note that $\Delta$ remains positive at $SOC \approx 0$ for this specific $P_{base}$ , implying the cut-off is energy-limited rather than stability-limited. (注意在此功率下，$Δ$ 在 SOC 归零时仍为正，说明关机是受能量限制而非稳定性限制)
 
 **A. 判别式流形 (Discriminant Manifold)**
+
 通过数值仿真，我们可以观察到在开环恒功率放电过程中，判别式 $Δ$ 随着 SOC 的消耗持续逼近临界值 0，这验证了判别式流形作为系统动力学可行域边界的物理意义。
 
 ![fig4.3](./src/Fig4.3_Voltage_Collapse_OpenLoop.png)
 
 **Figure 4.3. Voltage Collapse Open-Loop.** 
 
-The simulation shows the rapid terminal voltage decline under a high-power demand ($P_{base}=8W$). The absence of feedback leads the system directly toward the singular manifold $\Delta=0$. (仿真展示了高功率需求下端电压的快速跌落。由于缺乏反馈，系统直接走向奇异流形 $Δ=0$)
+The simulation shows the rapid terminal voltage decline under a high-power demand ( $P_{base}=8W$ ). The absence of feedback leads the system directly toward the singular manifold $\Delta=0$. (仿真展示了高功率需求下端电压的快速跌落。由于缺乏反馈，系统直接走向奇异流形 $Δ=0$)
 
-对于二次方程，物理可解的条件是判别式 $\Delta \ge 0$。定义系统状态空间中的**崩溃边界**：
-$$ \Delta(SOC, T, N_{cyc}) = [V_{est}(SOC) ]^2 - 4 \cdot R_0(T, N_{cyc}) \cdot P_{req} $$
+对于二次方程，物理可解的条件是判别式 $\Delta \ge 0$ 。定义系统状态空间中的**崩溃边界**:
+
+$$\Delta(SOC, T, N_{cyc}) = [V_{est}(SOC) ]^2 - 4 \cdot R_0(T, N_{cyc}) \cdot P_{req}$$
+
 *其中 $V_{est} = V_{OCV} - V_{pol}$ 为除去欧姆压降后的有效电压。*
 
 **B. 相平面可视化 (Phase Plane Visualization)**
+
 以 $SOC$ 为横轴，负载功率 $P$ 为纵轴，绘制不同老化程度和温度下的**安全运行区 (Safe Operating Area, SOA)**。
 
-为了防止系统超越崩溃边界 $P_{crit}$，引入的闭环节流机制能够动态调整负载功率，使得判别式 $Δ$ 始终保持在正值区间。
+为了防止系统超越崩溃边界 $P_{crit}$ ，引入的闭环节流机制能够动态调整负载功率，使得判别式 $Δ$ 始终保持在正值区间。
 
 ![Fig4.4](./src/Fig4.4_Voltage_and_Discriminant_Controlled.png)
 
 **Figure 4.4. Voltage and Discriminant Controlled.** 
 
-The feedback controller acts as a singular perturbation buffer, preventing the state trajectory from hitting the singular manifold where $\partial f/\partial I=0$. The feedback mechanism effectively regularizes the power demand. Note that the discriminant $\Delta$ is stabilized above zero, effectively preventing the saddle-node bifurcation and extending the operational duration (Case C).
+The feedback controller acts as a singular perturbation buffer, preventing the state trajectory from hitting the singular manifold where $\partial f/\partial I=0$ . The feedback mechanism effectively regularizes the power demand. Note that the discriminant $\Delta$ is stabilized above zero, effectively preventing the saddle-node bifurcation and extending the operational duration (Case C).
 
 ![Fig4.2](./src/Fig4.2_Discriminant_Boundary_vs_SOC.png)
 
@@ -340,14 +340,15 @@ The feedback controller acts as a singular perturbation buffer, preventing the s
 
 In phase-plane analysis, polarization voltages are neglected to highlight the dominant effect of ohmic resistance and OCV. 
 
-* 曲线方程：$P_{crit}(SOC) = \frac{V_{est}(SOC)^2}{4 R_0(T)}$
+* 曲线方程： $P_{crit}(SOC) = \frac{V_{est}(SOC)^2}{4 R_0(T)}$
 * 分析：曲线下方为稳定运行区。曲线上方为电压崩溃区。
 
-随着 $N_{cyc}$ 增加，$R_0$ 变大，曲线整体下移，SOA 面积急剧收缩。
+随着 $N_{cyc}$ 增加， $R_0$ 变大，曲线整体下移，SOA 面积急剧收缩。
 
 As aging progresses or temperature decreases, the safe operating area (SOA) shrinks significantly, explaining the observed sudden shutdown phenomena under high-load applications such as mobile gaming.
 
 The DAE-based simulation can be interpreted as a numerical realization of the SOC-domain integral defining the discharge time.
+
 ### 5.2 仿真流程与结果定义
 
 *Definition of Time-to-Empty*
@@ -355,10 +356,10 @@ The DAE-based simulation can be interpreted as a numerical realization of the SO
 The remaining discharge time (TTE) can be theoretically defined as the time required for the state of charge to evolve from its initial value (SOC_0) to the critical shutdown state.
 Given that the battery current is not an externally prescribed input but an implicit function of the system states through the algebraic power balance constraint, the discharge time can be expressed as  
 
-$$
-TTE = \int_{SOC_{crit}}^{SOC_0} \frac{Q_{\max}}{I^{*}(SOC, T, N)} , dSOC  
-$$
-where $I^{*}$ denotes the physically stable branch of the algebraic current solution. 
+$$TTE = \int_{SOC_{crit}}^{SOC_0} \frac{Q_{\max}}{I^{*}(SOC, T, N)} , dSOC$$
+
+where $I^{*}$ denotes the physically stable branch of the algebraic current solution.
+
 In practice, this integral does not admit a closed-form solution due to the strong nonlinear coupling among SOC, temperature, aging, and power feedback. Therefore, TTE is evaluated numerically by integrating the coupled DAE system until the shutdown condition is met.
 
 ![Fig5.1](./src/Fig5.1_Power_Feasibility_Boundary_P8W.png)
@@ -367,7 +368,7 @@ In practice, this integral does not admit a closed-form solution due to the stro
 
 **预测指标输出：**
 
-1. **TTE (Time-to-Empty)**：$\inf \{ t : SOC=0 \lor V_{term} \le 3.0V \lor \Delta < 0 \}$。Once the terminal voltage approaches the soft shutdown threshold, the feedback controller gradually reduces the power demand, preventing immediate voltage collapse. This behavior cannot be captured by traditional open-loop discharge models.
+1. **TTE (Time-to-Empty)**： $\inf \{ t : SOC=0 \lor V_{term} \le 3.0V \lor \Delta < 0 \}$ 。Once the terminal voltage approaches the soft shutdown threshold, the feedback controller gradually reduces the power demand, preventing immediate voltage collapse. This behavior cannot be captured by traditional open-loop discharge models.
 
 2. **关机类型判定**：
 * 能量耗尽：$SOC \approx 0$ 且 $V_{term} > 3.0V$。
@@ -375,14 +376,16 @@ In practice, this integral does not admit a closed-form solution due to the stro
 * 瞬间死机：$\Delta < 0$（常见于低温+重负载）。
 
 ## 6. Sensitivity Analysis
-为了定量评估系统在不同工况下的鲁棒性，本节分析了剩余放电时间（TTE）对内阻 $R_0$ 扰动的无量纲灵敏度；由于 TTE 的终点由功率判别式 $\Delta = 0$ 确定的临界状态 $SOC_{crit}$ 决定，定义 $SOC_{crit}$ 对 $R_0$ 的相对灵敏度系数 $S_{R_0}$：
+为了定量评估系统在不同工况下的鲁棒性，本节分析了剩余放电时间（TTE）对内阻 $R_0$ 扰动的无量纲灵敏度；由于 TTE 的终点由功率判别式 $\Delta = 0$ 确定的临界状态 $SOC_{crit}$ 决定，定义 $SOC_{crit}$ 对 $R_0$ 的相对灵敏度系数 $S_{R_0}$ ：
 
-$$ S_{R_0} = \frac{\partial SOC_{crit} / SOC_{crit}}{\partial R_0 / R_0} = \frac{R_0}{SOC_{crit}} \cdot \frac{d SOC_{crit}}{d R_0} $$
+$$S_{R_0} = \frac{\partial SOC_{crit} / SOC_{crit}}{\partial R_0 / R_0} = \frac{R_0}{SOC_{crit}} \cdot \frac{d SOC_{crit}}{d R_0}$$
 
 ### 6.1 隐函数求导
 
-根据代数约束 $f(SOC, R_0) = V_{OCV}(SOC)^2 - 4 R_0 P_{req} = 0$，利用隐函数求导：
-$$ \frac{d SOC_{crit}}{d R_0} = - \frac{\partial f / \partial R_0}{\partial f / \partial SOC} = \frac{4 P_{req}}{2 V_{OCV}(SOC) \cdot \frac{d V_{OCV}}{d SOC}} $$
+根据代数约束 $f(SOC, R_0) = V_{OCV}(SOC)^2 - 4 R_0 P_{req} = 0$ ，利用隐函数求导：
+
+$$\frac{d SOC_{crit}}{d R_0} = - \frac{\partial f / \partial R_0}{\partial f / \partial SOC} = \frac{4 P_{req}}{2 V_{OCV}(SOC) \cdot \frac{d V_{OCV}}{d SOC}}$$
+
 分析该式可知，灵敏度的大小高度依赖于 $V_{OCV}$ 曲线在临界点处的斜率以及当前电压水平。在 $SOC$ 较低的区域，$V_{OCV}$ 快速下降，导致 $d SOC_{crit} / d R_0$ 呈现非线性增长。
 
 ### 6.2 灵敏度热图分析
@@ -393,26 +396,23 @@ $$ \frac{d SOC_{crit}}{d R_0} = - \frac{\partial f / \partial R_0}{\partial f / 
 
 **Figure 5.3. Sensitivity TTE vs R0.** 采用了对数标尺 $\log_{10} |S_{R_0}|$ 可视化。
 
-1. **线性平稳区 (Low Sensitivity Region)**：在常温且新电池时，内阻较小，系统远离鞍结分岔点，$|S_{R_0}|$ 维持在低位，TTE 误差主要源于容量 $Q_{max}$。
-2. **动力学敏感区 (High Sensitivity Region)**：随着温度降低或老化加深，$R_0$ 指数级增长使得系统压向物理可行域边界。低温老化区域灵敏度系数发生数量级跳跃（$\log_{10} |S_{R_0}| > 1$）。
+1. **线性平稳区 (Low Sensitivity Region)**：在常温且新电池时，内阻较小，系统远离鞍结分岔点，$|S_{R_0}|$ 维持在低位，TTE 误差主要源于容量 $Q_{max}$ 。
+2. **动力学敏感区 (High Sensitivity Region)**：随着温度降低或老化加深，$R_0$ 指数级增长使得系统压向物理可行域边界。低温老化区域灵敏度系数发生数量级跳跃（ $\log_{10} |S_{R_0}| > 1$ ）。
 这解释了为什么传统 Coulomb Counting 在老化电池上频繁失效。建议 BMS 应当在低温或老化末期提升内阻更新频率。
 
 ### 6.3 Aging-Dependent Performance Metrics
 
-1. **Critical SOC**  
-$$
-SOC_{crit}(N) = \min { SOC \mid \Delta(SOC, T, N) = 0 }  
-$$
+1. **Critical SOC**
+
+$$SOC_{crit}(N) = \min { SOC \mid \Delta(SOC, T, N) = 0 }$$
     
-2. **Critical Power**  
-$$
-P_{crit}(N) = \frac{V_{est}^2(SOC_{crit})}{4 R_0(N)}  
-$$
+3. **Critical Power**
+
+$$P_{crit}(N) = \frac{V_{est}^2(SOC_{crit})}{4 R_0(N)}$$
     
-3. **Shutdown Mode Ratio**  
-$$
-\Gamma(N) = \frac{N_{\Delta<0}}{N_{total}}  
-$$
+5. **Shutdown Mode Ratio**
+
+$$\Gamma(N) = \frac{N_{\Delta<0}}{N_{total}}$$
 
 ## 7. Strengths and Weakness
 
