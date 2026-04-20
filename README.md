@@ -40,22 +40,22 @@
 | 符号 (Symbol)           | 定义 (Definition)                          | 单位 (Unit)   |
 | :--------------------- | :---------------------------------------- | :------------ |
 | $SOC(t)$               | 电池荷电状态 (State of Charge)               | 无量纲 (0~1)  |
-| $V_{C1}(t), V_{C2}(t)$ | 极化电容支路电压 (Polarization Voltages)      | V            |
+| $V_{C1}(t),V_{C2}(t)$  | 极化电容支路电压 (Polarization Voltages)      | V            |
 | $H(t)$                 | 滞后状态变量 (Hysteresis State)              | 无量纲 (-1~1) |
 | $T(t)$                 | 电池核心温度 (Battery Core Temperature)      | K            |  
 | $I_{batt}(t)$          | 电池放电电流 (Discharge Current)             | A            |
 | $V_{term}(t)$          | 电池端电压 (Terminal Voltage)               | V          |
 | $V_{OCV}$              | 包含滞后的开路电压 (OCV with Hysteresis)      | V          |
 | $V_{eq}$               | 电池平衡电势 (Equilibrium Potential)         | V          |
-| $R_0, R_1, R_2$        | 欧姆/快极化/慢极化内阻 (Internal Resistances)  | $\Omega$   |
-| $C_1, C_2$             | 极化电容 (Polarization Capacitances)         | F          |
+| $R_0,R_1, R_2$         | 欧姆/快极化/慢极化内阻 (Internal Resistances)  | $\Omega$   |
+| $C_1,C_2$              | 极化电容 (Polarization Capacitances)         | F          |
 | $Q_{max}(N_{cyc})$     | 当前循环下的最大可用容量 (Actual Capacity)      | Ah         |
 | $N_{cyc}$              | 电池等效循环次数 (Cycle Number)               | 无量纲        |
 | $P_{base}(t)$          | 系统基础功率需求 (Base Power Demand)          | W          |
 | $P_{req}(t)$           | 经节流后的实际负载功率 (Actual Load Power)      | W          |
 | $\lambda(V, T)$        | 系统功率反馈节流因子 (Throttling Coefficient)   | 无量纲 (0~1)  |
 | $\eta_{pmic}$          | 电源转换效率 (Power Conversion Efficiency)    | 无量纲 (0~1)  |
-| $m C_p$                 | 电池等效热容 (Total Heat Capacity)             | J/K        |
+| $m,C_p$                 | 电池等效热容 (Total Heat Capacity)             | J/K        |
 | $hA$                    | 综合散热系数 (Heat Transfer Coefficient)       | W/K        |
 | $T_{amb}$               | 环境温度 (Ambient Temperature)                | K          |
 | $E_a$                   | 内阻活化能 (Activation Energy)                | J/mol      |
