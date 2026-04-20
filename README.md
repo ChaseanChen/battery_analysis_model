@@ -171,7 +171,7 @@ The OCV curve is treated as an empirical monotonic function calibrated from typi
 
 $$\frac{dH}{dt} = -\kappa |I_{batt}| (H - \text{sgn}(I_{batt}))$$
 
-当持续放电时，$H \to -1$ ，表现为电压低于平衡电势 $V_{eq}$ 。In this work, only discharge scenarios are considered; therefore, the hysteresis state converges to $(H \to -1)$ , and the sign function reduces to a constant.
+当持续放电时， $H \to -1$ ，表现为电压低于平衡电势 $V_{eq}$ 。In this work, only discharge scenarios are considered; therefore, the hysteresis state converges to $(H \to -1)$ , and the sign function reduces to a constant.
 
 **C. 极化电压 (Dual-RC)**
 $$\frac{dV_{Ci}}{dt} = -\frac{1}{R_i C_i} V_{Ci} + \frac{1}{C_i} I_{batt}, \quad i=1,2$$
