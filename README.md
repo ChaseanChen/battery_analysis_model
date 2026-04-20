@@ -121,7 +121,7 @@ $$Q_{max}(N_{cyc}) = Q_{design} \cdot (1 + \delta_Q) \cdot \left( 1 - \alpha_{se
 
 $$R_{aging}(N_{cyc}) = (1 + \beta_{res} N_{cyc}) \cdot (1 + \delta_R)$$
 
-*其中 $\delta_R \sim N(0, 0.03)$ 为个体阻抗差异。* 
+其中 $\delta_R \sim N(0, 0.03)$ 为个体阻抗差异。
 
 Empirical studies on the NASA dataset indicate that, Within the first 150–200 cycles, experimental observations indicate that the effective DC internal resistance increases monotonically and can be approximated by a linear function. Therefore, a linearized aging model is adopted to balance physical fidelity and numerical tractability.
 
@@ -320,7 +320,7 @@ The simulation shows the rapid terminal voltage decline under a high-power deman
 
 $$\Delta(SOC, T, N_{cyc}) = [V_{est}(SOC) ]^2 - 4 \cdot R_0(T, N_{cyc}) \cdot P_{req}$$
 
-*其中 $V_{est} = V_{OCV} - V_{pol}$ 为除去欧姆压降后的有效电压。*
+其中 $V_{est} = V_{OCV} - V_{pol}$ 为除去欧姆压降后的有效电压。
 
 **B. 相平面可视化 (Phase Plane Visualization)**
 
@@ -414,9 +414,7 @@ $$P_{crit}(N) = \frac{V_{est}^2(SOC_{crit})}{4 R_0(N)}$$
 
 $$\Gamma(N) = \frac{N_{\Delta<0}}{N_{total}}$$
 
-## 7. Strengths and Weakness
-
-## 8. Conclusion
+## 7. Conclusion
 
 ![Fig6.1](./src/Fig6.1_Numerical_Validation_of_DAE_Power_Constraint.png)
 
@@ -427,7 +425,7 @@ $$\Gamma(N) = \frac{N_{\Delta<0}}{N_{total}}$$
 2. **边界可视化**：相平面分析清晰地展示了“低温关机”的物理边界。
 3. **实用价值**：该模型可部署于 BMS 中，提供比单纯 SOC 更具指导意义的“最大可用功率”预测。
 
-## 9. References
+## 8. References
 
 [1] B. Saha and K. Goebel, "Battery Data Set," *NASA Ames Prognostics Data Repository*, NASA Ames Research Center, Moffett Field, CA, 2007. [Online]. Available: https://www.nasa.gov/intelligent-systems-division/discovery-and-systems-health/pcoe/pcoe-data-set-repository/
 
