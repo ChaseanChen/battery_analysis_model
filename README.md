@@ -396,7 +396,7 @@ $$\frac{d SOC_{crit}}{d R_0} = - \frac{\partial f / \partial R_0}{\partial f / \
 
 **Figure 5.3. Sensitivity TTE vs R0.** 采用了对数标尺 $\log_{10} |S_{R_0}|$ 可视化。
 
-1. **线性平稳区 (Low Sensitivity Region)**：在常温且新电池时，内阻较小，系统远离鞍结分岔点，$|S_{R_0}|$ 维持在低位，TTE 误差主要源于容量 $Q_{max}$ 。
+1. **线性平稳区 (Low Sensitivity Region)**：在常温且新电池时，内阻较小，系统远离鞍结分岔点， $|S_{R_0}|$ 维持在低位，TTE 误差主要源于容量 $Q_{max}$ 。
 2. **动力学敏感区 (High Sensitivity Region)**：随着温度降低或老化加深，$R_0$ 指数级增长使得系统压向物理可行域边界。低温老化区域灵敏度系数发生数量级跳跃（ $\log_{10} |S_{R_0}| > 1$ ）。
 这解释了为什么传统 Coulomb Counting 在老化电池上频繁失效。建议 BMS 应当在低温或老化末期提升内阻更新频率。
 
