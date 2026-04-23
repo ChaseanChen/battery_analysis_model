@@ -98,12 +98,16 @@ Despite similar initial capacities, substantial dispersion in degradation rates 
 
 Based on the NASA lithium-ion battery aging dataset (B0005, B0006, B0007, B0018), the observed capacity fade after 130–170 discharge cycles:
 
+<div align="center">
+    
 | Battery | Cycles | Capacity Fade |
 | :-----: | :----: | :-----------: |
 |  B0005  |  168   |    28.62%     |
 |  B0006  |  168   |    41.75%     |
 |  B0007  |  168   |    24.25%     |
 |  B0018  |  132   |     7.71%     |
+
+</div>
 
 These values are used to constrain the feasible range of aging-related parameters in the proposed model.
 
